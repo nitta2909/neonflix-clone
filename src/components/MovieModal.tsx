@@ -1,22 +1,31 @@
 
 import React, { useEffect, useState } from 'react';
-import { X, Play, Plus, Share2, Star } from 'lucide-react';
+import { X, Play, Plus, Share2, Star, Check } from 'lucide-react';
 import type { Movie } from '../data/movies';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 interface MovieModalProps {
   movie: Movie | null;
   onClose: () => void;
+  onAddToList?: (movie: Movie) => void;
+  isInMyList?: boolean;
 }
 
-const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
+const MovieModal: React.FC<MovieModalProps> = ({ 
+  movie, 
+  onClose, 
+  onAddToList,
+  isInMyList = false
+}) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isInList, setIsInList] = useState(false);
+  const [isInList, setIsInList] = useState(isInMyList);
   const { toast } = useToast();
   
   useEffect(() => {
     if (movie) {
       setIsVisible(true);
+      setIsInList(isInMyList);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -25,7 +34,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [movie]);
+  }, [movie, isInMyList]);
   
   const handleClose = () => {
     setIsVisible(false);
@@ -44,9 +53,11 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
   };
 
   const handleAddToList = () => {
-    if (movie) {
+    if (movie && onAddToList) {
       setIsInList(!isInList);
-      console.info(`Add to list: ${movie.title}`);
+      if (!isInList) {
+        onAddToList(movie);
+      }
       toast({
         title: isInList ? "Removido da lista" : "Adicionado à lista",
         description: isInList 
@@ -134,31 +145,34 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
           <p className="text-white/80 leading-relaxed">{movie.description}</p>
           
           <div className="flex flex-wrap items-center gap-4">
-            <button 
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-neon-red rounded-md font-medium text-white hover:bg-neon-red/80 transition-colors"
+            <Button 
+              variant="default"
+              className="bg-neon-red hover:bg-neon-red/80 text-white"
               onClick={handlePlay}
             >
               <Play className="w-5 h-5 fill-white" />
               Play Now
-            </button>
+            </Button>
             
-            <button 
-              className={`flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border ${
+            <Button
+              variant="outline"
+              className={`border ${
                 isInList ? 'border-neon-red text-neon-red' : 'border-white/20 text-white'
-              } rounded-md font-medium hover:border-neon-red transition-colors`}
+              } bg-dark-bg hover:border-neon-red`}
               onClick={handleAddToList}
             >
-              <Plus className="w-5 h-5" />
-              {isInList ? 'Remove from List' : 'Add to List'}
-            </button>
+              {isInList ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+              {isInList ? 'In My List' : 'Add to List'}
+            </Button>
             
-            <button 
-              className="flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border border-white/20 rounded-md font-medium text-white hover:border-neon-blue transition-colors"
+            <Button
+              variant="outline"
+              className="border border-white/20 text-white bg-dark-bg hover:border-neon-blue"
               onClick={handleShare}
             >
               <Share2 className="w-5 h-5" />
               Share
-            </button>
+            </Button>
           </div>
           
           <div className="border-t border-white/10 pt-6">

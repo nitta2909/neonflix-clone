@@ -53,6 +53,18 @@ const Navbar = () => {
       setNotificationsCount(0);
     }
   };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const openMyListModal = () => {
+    const event = new CustomEvent('openMyListModal');
+    window.dispatchEvent(event);
+  };
   
   return (
     <header 
@@ -70,10 +82,46 @@ const Navbar = () => {
           
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#" className="text-white hover:text-neon-red transition-colors">Home</a>
-            <a href="#" className="text-white/80 hover:text-neon-red transition-colors">Series</a>
-            <a href="#" className="text-white/80 hover:text-neon-red transition-colors">Movies</a>
-            <a href="#" className="text-white/80 hover:text-neon-red transition-colors">New & Popular</a>
-            <a href="#" className="text-white/80 hover:text-neon-red transition-colors">My List</a>
+            <a 
+              href="#series-section" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('series-section');
+              }}
+              className="text-white/80 hover:text-neon-red transition-colors"
+            >
+              Series
+            </a>
+            <a 
+              href="#movies-section" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('movies-section');
+              }}
+              className="text-white/80 hover:text-neon-red transition-colors"
+            >
+              Movies
+            </a>
+            <a 
+              href="#trending-section" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('trending-section');
+              }}
+              className="text-white/80 hover:text-neon-red transition-colors"
+            >
+              New & Popular
+            </a>
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                openMyListModal();
+              }}
+              className="text-white/80 hover:text-neon-red transition-colors"
+            >
+              My List
+            </a>
           </nav>
         </div>
         

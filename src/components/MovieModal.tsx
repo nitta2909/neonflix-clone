@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, Play, Plus, Share2, Star } from 'lucide-react';
 import type { Movie } from '../data/movies';
+import { useToast } from '@/hooks/use-toast';
 
 interface MovieModalProps {
   movie: Movie | null;
@@ -10,6 +11,8 @@ interface MovieModalProps {
 
 const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isInList, setIsInList] = useState(false);
+  const { toast } = useToast();
   
   useEffect(() => {
     if (movie) {
@@ -27,6 +30,41 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300);
+  };
+
+  const handlePlay = () => {
+    if (movie) {
+      console.info(`Play movie: ${movie.title}`);
+      toast({
+        title: "Reproduzindo",
+        description: `Iniciando: ${movie.title}`,
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleAddToList = () => {
+    if (movie) {
+      setIsInList(!isInList);
+      console.info(`Add to list: ${movie.title}`);
+      toast({
+        title: isInList ? "Removido da lista" : "Adicionado à lista",
+        description: isInList 
+          ? `${movie.title} foi removido da sua lista` 
+          : `${movie.title} foi adicionado à sua lista`,
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleShare = () => {
+    if (movie) {
+      toast({
+        title: "Compartilhado",
+        description: `Link de ${movie.title} copiado para a área de transferência`,
+        duration: 3000,
+      });
+    }
   };
   
   if (!movie) return null;
@@ -96,17 +134,28 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
           <p className="text-white/80 leading-relaxed">{movie.description}</p>
           
           <div className="flex flex-wrap items-center gap-4">
-            <button className="flex items-center justify-center gap-2 px-6 py-3 bg-neon-red rounded-md font-medium text-white hover:bg-neon-red/80 transition-colors">
+            <button 
+              className="flex items-center justify-center gap-2 px-6 py-3 bg-neon-red rounded-md font-medium text-white hover:bg-neon-red/80 transition-colors"
+              onClick={handlePlay}
+            >
               <Play className="w-5 h-5 fill-white" />
               Play Now
             </button>
             
-            <button className="flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border border-white/20 rounded-md font-medium text-white hover:border-neon-red transition-colors">
+            <button 
+              className={`flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border ${
+                isInList ? 'border-neon-red text-neon-red' : 'border-white/20 text-white'
+              } rounded-md font-medium hover:border-neon-red transition-colors`}
+              onClick={handleAddToList}
+            >
               <Plus className="w-5 h-5" />
-              Add to List
+              {isInList ? 'Remove from List' : 'Add to List'}
             </button>
             
-            <button className="flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border border-white/20 rounded-md font-medium text-white hover:border-neon-red transition-colors">
+            <button 
+              className="flex items-center justify-center gap-2 px-5 py-3 bg-dark-bg border border-white/20 rounded-md font-medium text-white hover:border-neon-blue transition-colors"
+              onClick={handleShare}
+            >
               <Share2 className="w-5 h-5" />
               Share
             </button>

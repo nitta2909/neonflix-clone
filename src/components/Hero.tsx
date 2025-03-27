@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Play, Info, VolumeX, Volume2 } from 'lucide-react';
 import type { Movie } from '../data/movies';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
 
 interface HeroProps {
   movies: Movie[];
@@ -14,6 +15,7 @@ const Hero: React.FC<HeroProps> = ({ movies, onInfoClick }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   const currentMovie = movies[currentIndex];
   
@@ -31,6 +33,11 @@ const Hero: React.FC<HeroProps> = ({ movies, onInfoClick }) => {
   
   const toggleMute = () => {
     setIsMuted(!isMuted);
+    toast({
+      title: isMuted ? "Som ativado" : "Som desativado",
+      description: `O som foi ${isMuted ? "ativado" : "desativado"} com sucesso.`,
+      duration: 2000,
+    });
   };
   
   const goToSlide = (index: number) => {
@@ -39,6 +46,15 @@ const Hero: React.FC<HeroProps> = ({ movies, onInfoClick }) => {
       setCurrentIndex(index);
       setIsTransitioning(false);
     }, 500);
+  };
+
+  const handlePlayClick = () => {
+    console.info(`Play movie: ${currentMovie.title}`);
+    toast({
+      title: "Reproduzindo",
+      description: `Iniciando: ${currentMovie.title}`,
+      duration: 3000,
+    });
   };
   
   return (
@@ -88,7 +104,10 @@ const Hero: React.FC<HeroProps> = ({ movies, onInfoClick }) => {
               </p>
               
               <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                <button className="flex items-center justify-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-neon-red rounded-md font-medium text-white hover:bg-neon-red/80 transition-colors transform hover:scale-105 duration-300 text-sm sm:text-base shadow-neon-red">
+                <button 
+                  className="flex items-center justify-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-neon-red rounded-md font-medium text-white hover:bg-neon-red/80 transition-colors transform hover:scale-105 duration-300 text-sm sm:text-base shadow-neon-red"
+                  onClick={handlePlayClick}
+                >
                   <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-white" />
                   <span>Play</span>
                 </button>

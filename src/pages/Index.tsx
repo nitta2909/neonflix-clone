@@ -7,6 +7,7 @@ import MovieModal from '../components/MovieModal';
 import Loader from '../components/Loader';
 import Footer from '../components/Footer';
 import MyListModal from '../components/MyListModal';
+import { useToast } from '@/hooks/use-toast';
 import { 
   movies, 
   getTrendingMovies, 
@@ -20,6 +21,7 @@ const Index = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [myList, setMyList] = useState<Movie[]>([]);
   const [showMyListModal, setShowMyListModal] = useState(false);
+  const { toast } = useToast();
   
   const handleMovieClick = (movie: Movie) => {
     setSelectedMovie(movie);
@@ -36,11 +38,28 @@ const Index = () => {
   const addToMyList = (movie: Movie) => {
     if (!myList.some(item => item.id === movie.id)) {
       setMyList([...myList, movie]);
+      toast({
+        title: "Adicionado à sua lista",
+        description: `${movie.title} foi adicionado à sua lista`,
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "Já na lista",
+        description: `${movie.title} já está na sua lista`,
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
   const removeFromMyList = (movieId: number) => {
     setMyList(myList.filter(movie => movie.id !== movieId));
+    toast({
+      title: "Removido da sua lista",
+      description: "Item removido da sua lista com sucesso",
+      duration: 3000,
+    });
   };
 
   useEffect(() => {
@@ -71,6 +90,7 @@ const Index = () => {
             title="Trending Now"
             movies={getTrendingMovies()}
             onMovieClick={handleMovieClick}
+            onAddToList={addToMyList}
           />
         </div>
         
@@ -79,6 +99,7 @@ const Index = () => {
             title="Series"
             movies={getNewMovies()}
             onMovieClick={handleMovieClick}
+            onAddToList={addToMyList}
           />
         </div>
         
@@ -87,6 +108,7 @@ const Index = () => {
             title="Movies"
             movies={getActionMovies()}
             onMovieClick={handleMovieClick}
+            onAddToList={addToMyList}
           />
         </div>
         
@@ -94,6 +116,7 @@ const Index = () => {
           title="Sci-Fi Adventures"
           movies={getSciFiMovies()}
           onMovieClick={handleMovieClick}
+          onAddToList={addToMyList}
         />
       </div>
       

@@ -1,11 +1,14 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, Instagram, Twitter, Facebook, ChevronUp, ExternalLink } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
 
 const Footer = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   const toggleSection = (section: string) => {
     if (expandedSection === section) {
@@ -14,46 +17,54 @@ const Footer = () => {
       setExpandedSection(section);
     }
   };
+
+  const handleSocialClick = (platform: string) => {
+    toast({
+      title: `${platform}`,
+      description: `Conectando com o ${platform}...`,
+      duration: 3000,
+    });
+  };
   
   const footerSections = [
     {
       id: 'about',
       title: 'Sobre a NeonFlix',
       links: [
-        { text: 'Sobre nós', url: '#' },
-        { text: 'Carreiras', url: '#' },
-        { text: 'Imprensa', url: '#' },
-        { text: 'Blog', url: '#' },
+        { text: 'Sobre nós', url: '/page/sobre-nos' },
+        { text: 'Carreiras', url: '/page/carreiras' },
+        { text: 'Imprensa', url: '/page/imprensa' },
+        { text: 'Blog', url: '/page/blog' },
       ],
     },
     {
       id: 'help',
       title: 'Ajuda',
       links: [
-        { text: 'Perguntas frequentes', url: '#' },
-        { text: 'Suporte', url: '#' },
-        { text: 'Contato', url: '#' },
-        { text: 'Preferências de cookies', url: '#' },
+        { text: 'Perguntas frequentes', url: '/page/perguntas-frequentes' },
+        { text: 'Suporte', url: '/page/suporte' },
+        { text: 'Contato', url: '/page/contato' },
+        { text: 'Preferências de cookies', url: '/page/cookies' },
       ],
     },
     {
       id: 'legal',
       title: 'Legal',
       links: [
-        { text: 'Termos de uso', url: '#' },
-        { text: 'Privacidade', url: '#' },
-        { text: 'Avisos legais', url: '#' },
-        { text: 'Configurações de cookies', url: '#' },
+        { text: 'Termos de uso', url: '/page/termos-de-uso' },
+        { text: 'Privacidade', url: '/page/privacidade' },
+        { text: 'Avisos legais', url: '/page/avisos-legais' },
+        { text: 'Configurações de cookies', url: '/page/config-cookies' },
       ],
     },
     {
       id: 'account',
       title: 'Conta',
       links: [
-        { text: 'Minha conta', url: '#' },
-        { text: 'Cancelar assinatura', url: '#' },
-        { text: 'Redimir código', url: '#' },
-        { text: 'Comprar cartão presente', url: '#' },
+        { text: 'Minha conta', url: '/page/minha-conta' },
+        { text: 'Cancelar assinatura', url: '/page/cancelar-assinatura' },
+        { text: 'Redimir código', url: '/page/redimir-codigo' },
+        { text: 'Comprar cartão presente', url: '/page/cartao-presente' },
       ],
     },
   ];
@@ -107,16 +118,16 @@ const Footer = () => {
                 }`}
               >
                 {section.links.map((link, index) => (
-                  <a 
+                  <Link 
                     key={index} 
-                    href={link.url}
+                    to={link.url}
                     className="block text-white/70 hover:text-neon-red transition-colors duration-200 group"
                   >
                     <span className="inline-flex items-center gap-1">
                       {link.text}
                       <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </span>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -132,9 +143,9 @@ const Footer = () => {
             { Icon: Mail, label: 'Email' },
             { Icon: Phone, label: 'Telefone' },
           ].map(({ Icon, label }, index) => (
-            <a 
+            <button 
               key={index}
-              href="#"
+              onClick={() => handleSocialClick(label)}
               className="group relative"
               aria-label={label}
             >
@@ -142,7 +153,7 @@ const Footer = () => {
               <div className="p-3 rounded-full bg-card-bg/40 backdrop-blur-sm border border-white/10 hover:border-neon-red transition-colors duration-300 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-neon-red/0 before:via-neon-red/10 before:to-neon-red/0 before:translate-x-[-100%] group-hover:before:translate-x-[100%] before:transition-transform before:duration-500">
                 <Icon className="w-5 h-5 text-white/80 group-hover:text-neon-red transition-colors duration-300" />
               </div>
-            </a>
+            </button>
           ))}
         </div>
         
@@ -155,11 +166,17 @@ const Footer = () => {
             Criado com animações premium e efeitos neon para a melhor experiência de streaming.
           </p>
           <div className="flex justify-center space-x-2 text-xs mt-4">
-            <a href="#" className="hover:text-neon-red transition-colors">Política de Privacidade</a>
+            <Link to="/page/privacidade" className="hover:text-neon-red transition-colors">
+              Política de Privacidade
+            </Link>
             <span>•</span>
-            <a href="#" className="hover:text-neon-red transition-colors">Termos de Uso</a>
+            <Link to="/page/termos-de-uso" className="hover:text-neon-red transition-colors">
+              Termos de Uso
+            </Link>
             <span>•</span>
-            <a href="#" className="hover:text-neon-red transition-colors">Cookies</a>
+            <Link to="/page/cookies" className="hover:text-neon-red transition-colors">
+              Cookies
+            </Link>
           </div>
         </div>
       </div>

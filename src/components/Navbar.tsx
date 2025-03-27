@@ -1,8 +1,16 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, Bell, User, ChevronDown, LogIn, LogOut } from 'lucide-react';
 import SearchBar from './SearchBar';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,6 +18,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notificationsCount, setNotificationsCount] = useState(3);
+  const notificationsRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -23,6 +32,20 @@ const Navbar = () => {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  useEffect(() => {
+    // Handle clicks outside the notifications dropdown
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
   
   const toggleSearch = () => {
@@ -133,7 +156,7 @@ const Navbar = () => {
             <Search className={`w-5 h-5 ${showSearch ? 'text-neon-red' : ''}`} />
           </button>
           
-          <div className="relative">
+          <div className="relative" ref={notificationsRef}>
             <button 
               onClick={toggleNotifications}
               className="text-white hover:text-neon-red transition-colors relative"
@@ -177,26 +200,52 @@ const Navbar = () => {
           </div>
           
           {isLoggedIn ? (
-            <div className="flex items-center space-x-2 cursor-pointer group relative">
-              <div className="w-8 h-8 rounded-md bg-neon-red/20 flex items-center justify-center">
-                <User className="w-5 h-5 text-neon-red" />
-              </div>
-              <ChevronDown className="w-4 h-4 text-white group-hover:text-neon-red transition-colors group-hover:rotate-180 transition-transform duration-300" />
-              
-              <div className="absolute right-0 top-full mt-2 w-48 bg-dark-bg/95 backdrop-blur-sm rounded-md shadow-lg border border-white/10 hidden group-hover:block z-50 transform origin-top-right transition-all duration-200 animate-scale-in">
-                <div className="py-1">
-                  <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors">Perfil</a>
-                  <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors">Configurações</a>
-                  <button 
-                    onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Sair
-                  </button>
-                </div>
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center space-x-2 cursor-pointer">
+                  <div className="w-8 h-8 rounded-md bg-neon-red/20 flex items-center justify-center">
+                    <User className="w-5 h-5 text-neon-red" />
+                  </div>
+                  <ChevronDown className="w-4 h-4 text-white transition-transform duration-300" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="bg-dark-bg/95 backdrop-blur-md border-white/10 text-white min-w-[200px]"
+              >
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
+                  className="hover:bg-white/10 hover:text-neon-red focus:bg-white/10 focus:text-neon-red cursor-pointer"
+                  onClick={() => {
+                    toast({
+                      title: "Perfil",
+                      description: "Acessando configurações de perfil",
+                    });
+                  }}
+                >
+                  Perfil
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="hover:bg-white/10 hover:text-neon-red focus:bg-white/10 focus:text-neon-red cursor-pointer"
+                  onClick={() => {
+                    toast({
+                      title: "Configurações",
+                      description: "Acessando configurações da conta",
+                    });
+                  }}
+                >
+                  Configurações
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem 
+                  className="hover:bg-white/10 hover:text-neon-red focus:bg-white/10 focus:text-neon-red cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <button 
               onClick={handleLogin}

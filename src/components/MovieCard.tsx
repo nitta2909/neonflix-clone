@@ -6,9 +6,10 @@ import type { Movie } from '../data/movies';
 interface MovieCardProps {
   movie: Movie;
   onClick: (movie: Movie) => void;
+  onAddToList?: (movie: Movie) => void;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick, onAddToList }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (
@@ -84,7 +85,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
               className="w-9 h-9 rounded-full bg-dark-bg/50 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:border-neon-red transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log('Add to list:', movie.title);
+                if (onAddToList) {
+                  onAddToList(movie);
+                }
               }}
             >
               <Plus className="w-4 h-4 text-white group-hover:text-neon-red" />

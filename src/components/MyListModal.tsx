@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription
 } from "@/components/ui/dialog";
 
 interface MyListModalProps {
@@ -46,6 +47,9 @@ const MyListModal: React.FC<MyListModalProps> = ({
       <DialogContent className="bg-card-bg border-white/10 text-white max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Minha Lista</DialogTitle>
+          <DialogDescription className="text-white/60">
+            Filmes e séries salvos para assistir mais tarde
+          </DialogDescription>
         </DialogHeader>
         
         {movies.length === 0 ? (
@@ -71,7 +75,7 @@ const MyListModal: React.FC<MyListModalProps> = ({
                     onClick={() => handleMovieClick(movie)}
                   >
                     <img 
-                      src={movie.imageUrl} 
+                      src={movie.posterUrl} 
                       alt={movie.title}
                       className="w-full h-full object-cover"
                     />

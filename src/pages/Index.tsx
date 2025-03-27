@@ -5,6 +5,7 @@ import Hero from '../components/Hero';
 import MovieCarousel from '../components/MovieCarousel';
 import MovieModal from '../components/MovieModal';
 import Loader from '../components/Loader';
+import Footer from '../components/Footer';
 import { 
   movies, 
   getTrendingMovies, 
@@ -61,18 +62,7 @@ const Index = () => {
         />
       </div>
       
-      <footer className="py-8 border-t border-white/10">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="text-center text-white/50 text-sm">
-            <p className="mb-2">
-              &copy; {new Date().getFullYear()} NeonFlix. All rights reserved.
-            </p>
-            <p>
-              Created with premium animations and neon effects for the ultimate streaming experience.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
       
       <MovieModal movie={selectedMovie} onClose={closeModal} />
     </main>

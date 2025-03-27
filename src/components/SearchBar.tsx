@@ -36,7 +36,7 @@ const SearchBar = () => {
         type="text"
         ref={inputRef}
         className="block w-full bg-transparent border-0 py-3 pl-10 pr-10 text-white placeholder:text-white/50 focus:ring-0 focus:outline-none"
-        placeholder="Search for movies, TV shows, genres..."
+        placeholder="Procurar por filmes, TV shows,Series..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onFocus={() => setIsFocused(true)}
@@ -56,7 +56,7 @@ const SearchBar = () => {
       {isFocused && (
         <div className="absolute left-0 right-0 top-full mt-1 bg-card-bg/95 backdrop-blur-lg rounded-md shadow-lg border border-white/10 z-10 p-2 animate-fade-in">
           <div className="text-sm text-white/50 p-2">
-            {searchTerm ? 'Start typing to search...' : 'Popular searches: Action, Comedy, Sci-Fi'}
+            {searchTerm ? 'Start typing to search...' : 'Populares,Comedias,Drama, etc.'}
           </div>
         </div>
       )}

@@ -16,7 +16,7 @@ const Loader = () => {
       }, 1000);
       
       return () => clearTimeout(fadeOutTimer);
-    }, 2500);
+    }, 4000);
     
     return () => clearTimeout(timer);
   }, []);
@@ -34,7 +34,7 @@ const Loader = () => {
         <div className="mb-12">
           <h1 className="text-7xl font-extrabold tracking-tighter">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-red via-neon-purple to-neon-blue bg-[length:400%_100%] animate-[logo-shine_3s_ease-in-out_infinite]">
-              NEONFLIX
+              Mauricio Nitta Dev.
             </span>
           </h1>
         </div>

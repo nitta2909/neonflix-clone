@@ -56,7 +56,7 @@ const Navbar = () => {
     setIsLoggedIn(true);
     toast({
       title: "Login realizado com sucesso",
-      description: "Bem-vindo de volta ao NEONFLIX!",
+      description: "Bem-vindo de volta ao Mauricio Nitta Dev.!",
       duration: 3000,
     });
   };
@@ -99,7 +99,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-8">
           <h1 className="text-3xl md:text-4xl netflix-title">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-neon-red via-neon-purple to-neon-blue bg-[length:400%_100%] animate-[logo-shine_4s_linear_infinite]">
-              NEONFLIX
+              MauricioNitta Dev.
             </span>
           </h1>
           
@@ -123,7 +123,7 @@ const Navbar = () => {
               }}
               className="text-white/80 hover:text-neon-red transition-colors text-lg font-medium"
             >
-              Movies
+              Filmes
             </a>
             <a 
               href="#trending-section" 
@@ -143,7 +143,7 @@ const Navbar = () => {
               }}
               className="text-white/80 hover:text-neon-red transition-colors text-lg font-medium"
             >
-              My List
+              Minha lista
             </a>
           </nav>
         </div>

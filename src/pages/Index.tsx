@@ -87,7 +87,7 @@ const Index = () => {
       <div className="pb-16">
         <div id="trending-section">
           <MovieCarousel 
-            title="Trending Now"
+            title="Populares"
             movies={getTrendingMovies()}
             onMovieClick={handleMovieClick}
             onAddToList={addToMyList}
@@ -96,7 +96,7 @@ const Index = () => {
         
         <div id="series-section">
           <MovieCarousel 
-            title="Series"
+            title="Seriados"
             movies={getNewMovies()}
             onMovieClick={handleMovieClick}
             onAddToList={addToMyList}
@@ -105,7 +105,7 @@ const Index = () => {
         
         <div id="movies-section">
           <MovieCarousel 
-            title="Movies"
+            title="Filmes"
             movies={getActionMovies()}
             onMovieClick={handleMovieClick}
             onAddToList={addToMyList}
@@ -113,7 +113,7 @@ const Index = () => {
         </div>
         
         <MovieCarousel 
-          title="Sci-Fi Adventures"
+          title="Ficção Científica"
           movies={getSciFiMovies()}
           onMovieClick={handleMovieClick}
           onAddToList={addToMyList}

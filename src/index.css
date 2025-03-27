@@ -67,7 +67,7 @@
 
 @layer components {
   .text-glow {
-    text-shadow: 0 0 10px currentColor;
+    text-shadow: 0 0 20px currentColor;
   }
   
   .neon-text-red {
@@ -104,6 +104,11 @@
   .shimmer {
     @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent;
   }
+  
+  .netflix-title {
+    @apply font-extrabold tracking-tighter;
+    letter-spacing: -0.05em;
+  }
 }
 
 @keyframes shimmer {
@@ -111,3 +116,13 @@
     transform: translateX(100%);
   }
 }
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
